@@ -26,13 +26,3 @@ Daily
 #Preassure
 #Rain
 #Wind
-#Enter tags to make it easier to search for your skill (optional):
-#- weather
-#- home
-#- temperature
-#- c02
-#- humidity
-#- preassure
-#- rain
-#- wind
-
