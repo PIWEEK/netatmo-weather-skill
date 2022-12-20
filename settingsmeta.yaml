@@ -8,8 +8,9 @@ skillMetadata:
 
         - name: username
           type: text
-          label: Username
+          label: Email
           value: ""
+          placeholder: Netatmo login email
         - name: password
           type: password
           label: Password
@@ -24,11 +25,11 @@ skillMetadata:
           type: text
           label: Client ID
           value: ""
-          placeholder: your App ID code
+          placeholder: your Netatmo App ID code
         - name: client_secret
-          type: text
+          type: password
           label: Client Secret
           value: ""
-          placeholder: your App Secret code
+          placeholder: your Netatmo App Secret code
 
 
