@@ -7,6 +7,9 @@ class NetatmoWeather(MycroftSkill):
 
     @intent_file_handler('weather.netatmo.intent')
     def handle_weather_netatmo(self, message):
+        username = self.settings.get('username')
+        self.log.info(f"LOG weather.netatmo username > {username}")
+
         self.speak_dialog('weather.netatmo')
 
 
