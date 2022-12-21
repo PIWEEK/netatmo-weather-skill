@@ -14,8 +14,8 @@ Queries your netatmo weather stations for you
 Daniel Herrero García
 
 ## Category
-**Information**
-Daily
+IoT
+Information
 
 ## Tags
 #Weather
