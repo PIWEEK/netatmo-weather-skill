@@ -1,6 +1,12 @@
 import unidecode
+from typing import TypedDict
 from mycroft import MycroftSkill, intent_file_handler
 from lnetatmo import ClientAuth, WeatherStationData, AuthFailure
+
+
+class Co2Read(TypedDict):
+    level: str
+    message: str
 
 
 class NetatmoWeather(MycroftSkill):
@@ -41,7 +47,7 @@ class NetatmoWeather(MycroftSkill):
                 module_weather = modules_weather_data[module]
                 module_temp = module_weather['Temperature']
                 module_humidity = module_weather['Humidity']
-                self.log.info(f"Temp/Humidity  > {module_temp}º/{module_humidity}%")
+                self.log.info(f"Temp/Humidity  > {module_temp}ºC {module_humidity}%")
                 self.speak_dialog('weather_netatmo', data={
                     'module': module,
                     'temp': module_temp,
@@ -50,7 +56,11 @@ class NetatmoWeather(MycroftSkill):
                 if "CO2" in module_weather.keys():
                     module_air = module_weather['CO2']
                     self.log.info(f"CO2 level > {module_air}")
-                    self.speak_dialog('weather_netatmo_air', data={'air': module_air})
+                    co2_read = evaluate_air(c02=module_air)
+                    self.speak_dialog(
+                        'weather_netatmo_air',
+                        data={'level': co2_read["level"], 'message': co2_read["message"]}
+                    )
 
     def load_setting_variables(self):
         self.username = self.settings.get('username')
@@ -77,6 +87,17 @@ def create_skill():
 
 def normalizeText(text: str) -> str:
     return unidecode.unidecode(text.lower())
+
+
+def evaluate_air(c02: float) -> Co2Read:
+    if c02 < 1200:
+        return Co2Read(level='fine', message='Enjoy the fresh air.')
+    if c02 <= 1500:
+        return Co2Read(level='a bit high', message='If possible, consider to open a window.')
+    if c02 <= 2000:
+        return Co2Read(level='high', message="Consider to open a window if you have troubles concentrating.")
+
+    return Co2Read(level='very high', message='Consider to open a window to avoid headaches.')
 
 
 def parse_netatmo_weather(stations_weather_data):
