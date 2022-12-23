@@ -39,8 +39,18 @@ class NetatmoWeather(MycroftSkill):
                 self.speak_dialog('error_module_missing', {'module': module})
             else:
                 module_weather = modules_weather_data[module]
-                self.log.info(f"Temperature  > {module_weather['Temperature']}")
-                self.speak_dialog('weather_netatmo', data={'module': module, 'temp': module_weather["Temperature"]})
+                module_temp = module_weather['Temperature']
+                module_humidity = module_weather['Humidity']
+                self.log.info(f"Temp/Humidity  > {module_temp}º/{module_humidity}%")
+                self.speak_dialog('weather_netatmo', data={
+                    'module': module,
+                    'temp': module_temp,
+                    'humidity': module_humidity
+                })
+                if "CO2" in module_weather.keys():
+                    module_air = module_weather['CO2']
+                    self.log.info(f"CO2 level > {module_air}")
+                    self.speak_dialog('weather_netatmo_air', data={'air': module_air})
 
     def load_setting_variables(self):
         self.username = self.settings.get('username')
