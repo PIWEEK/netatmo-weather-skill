@@ -21,10 +21,11 @@ class NetatmoWeather(MycroftSkill):
 
     def on_settings_changed(self):
         self.load_setting_variables()
-        self.read_netatmo_weather()
 
     @intent_file_handler('weather_netatmo.intent')
     def handle_weather_netatmo(self, message):
+        self.read_netatmo_weather()
+
         if not self.weather_data:
             self.speak_dialog('error_auth')
         else:
